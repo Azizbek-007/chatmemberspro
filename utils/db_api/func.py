@@ -55,6 +55,18 @@ class DBS:
         query = f"SELECT count(*) FROM group_join WHERE user_id='{user_id}'"
         data = self.post_sql_query(query)
         return data[0]
+    
+    def top_users (self, group_id):
+        query = f"SELECT user_id, group_id FROM group_join WHERE group_id='{group_id}'"
+        data = self.post_sql_query(query)
+        abc = []
+        for x in data:
+            query2 = f"SELECT count(user_id) FROM group_join WHERE user_id={x[0]}"
+            data2 = self.post_sql_query(query2)
+            if {x[0]: data2[0][0]} not in abc:
+                abc.append({x[0]: data2[0][0]})
+        
 
 
     
+DBS.top_users(DBS, 1)

@@ -86,5 +86,15 @@ Tasodifiy raqamlar funktsiyasi
 
     "statistika": {
         "uz": "•📊 Statistika 📈\n\n•👤 Obunashilar: {}\n•👥 Guruhlar: {}"
+    },
+
+    "reply_user_count": {
+        "uz": "<a href='tg://user?id={}'>{}</a> gruppaga {} adam qosti."
+    },
+    "my_id": {
+        "uz": "<a href='tg://user?id={}'>{}</a> sizdin' user id: <code>{}</code>"
+    },
+    "group_id": {
+        "uz": "Grouppa id: <code>{}</code>"
     }
 }

@@ -16,4 +16,4 @@ async def on_startup(dispatcher):
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp, on_startup=on_startup)
+    executor.start_polling(dp, skip_updates=['my_chat_member', 'message', 'callback_query'], on_startup=on_startup)

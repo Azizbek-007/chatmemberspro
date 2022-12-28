@@ -10,6 +10,8 @@ from utils.db_api import DBS
 @dp.message_handler(CommandStart())
 @dp.throttled(rate=5)
 async def bot_start(message: types.Message):
+    await message.answer(message)
+
     text = lang.get("start").get("uz").format(message.from_id, message.from_user.first_name)
     bot_data = await dp.bot.get_me()
     DBS.user_register(DBS, user_id=message.from_id, user_name=message.from_user.username, full_name=message.from_user.full_name)
