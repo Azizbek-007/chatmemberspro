@@ -7,8 +7,11 @@ from lang.message import lang
 async def bot_chek_member(msg: types.Message):
     reply_user = msg.reply_to_message.from_user
     reply_user_count = DBS.my_members(DBS, user_id=reply_user.id)
-    text = lang.get("reply_user_count").get("uz")
-    await msg.answer(text.format(reply_user.id, reply_user.first_name, reply_user_count[0]))
+    if int(reply_user_count[0]) == 0:
+        await msg.answer("Gruppaga ele adam qospagan")
+    else:
+        text = lang.get("reply_user_count").get("uz")
+        await msg.answer(text.format(reply_user.id, reply_user.first_name, reply_user_count[0]))
     
 @dp.message_handler(commands=['check'])
 async def bot_check_fix(msg: types.Message):

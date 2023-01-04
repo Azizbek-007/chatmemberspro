@@ -44,15 +44,15 @@ class DBS:
         g_count = self.post_sql_query(group)
         return u_count[0][0], g_count[0][0]
     
-    def join_in_group (self, user_id, add_user_id):
-        query = f"SELECT * FROM group_join WHERE user_id='{user_id}' AND add_user_id='{add_user_id}'"
+    def join_in_group (self, user_id, add_user_id, group_id):
+        query = f"SELECT * FROM group_join WHERE user_id='{user_id}' AND add_user_id='{add_user_id}' AND group_id='{group_id}'"
         data = self.post_sql_query(query)
         if not data:
-            insert_query = f"INSERT INTO group_join(user_id, add_user_id) VALUES ('{user_id}', '{add_user_id}')"
+            insert_query = f"INSERT INTO group_join(user_id, add_user_id, group_id) VALUES ('{user_id}', '{add_user_id}', '{group_id}')"
             self.post_sql_query(insert_query)
 
-    def my_members(self, user_id):
-        query = f"SELECT count(*) FROM group_join WHERE user_id='{user_id}'"
+    def my_members(self, user_id, group_id):
+        query = f"SELECT count(*) FROM group_join WHERE user_id='{user_id}' and group_id='{group_id}'"
         data = self.post_sql_query(query)
         return data[0]
     
@@ -65,7 +65,22 @@ class DBS:
             data2 = self.post_sql_query(query2)
             if {x[0]: data2[0][0]} not in abc:
                 abc.append({x[0]: data2[0][0]})
+    
+    def user_list(self):
+        query = "SELECT * FROM users"
+        return self.post_sql_query(query)
+    
+    def group_list(self):
+        query = "SELECT * FROM groups"
+        return self.post_sql_query(query)
         
+    def clear_all_user(self, user_id):
+        query = f"DELETE FROM group_join WHERE user_id='{user_id}'"
+        self.post_sql_query(query)
+    
+    def clear_all_group(self, group_id):
+        query = f"DELETE FROM group_join WHERE group_id='{group_id}'"
+        self.post_sql_query(query)
 
 
     

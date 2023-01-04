@@ -7,6 +7,8 @@ async def set_default_commands(dp):
             types.BotCommand("start", "Botni ishga tushurish"),
             types.BotCommand("mymembers", "neshe adam qosqanin'izdi aniqlaysiz"),
             types.BotCommand("check", "check"),
-            types.BotCommand("gid", "gruppa idsi")
+            types.BotCommand("gid", "gruppa idsi"),
+            types.BotCommand("clear", "user maglumatin tazlaw"),
+            types.BotCommand("clearall", "grouppa maglumatin tazalaw")
         ]
     )
