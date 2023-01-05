@@ -73,6 +73,33 @@ class DBS:
     def group_list(self):
         query = "SELECT * FROM groups"
         return self.post_sql_query(query)
+    
+    def group_insert_channel(self, channel_id, group_id):
+        query = f"UPDATE groups set channel_id='{channel_id}' where group_id='{group_id}'"
+        self.post_sql_query(query)
+        return True
+    
+    def group_unset_channel(self, group_id):
+        query = f"UPDATE groups set channel_id=NULL where group_id={group_id}"
+        self.post_sql_query(query)
+
+    def set_group_premissions(self, group_id, premissions):
+        query = f"UPDATE groups set premissons='{premissions}' where group_id={group_id}"
+        self.post_sql_query(query)
+    
+    def get_group_premissions(self, group_id):
+        query = f"SELECT premissons FROM groups where group_id={group_id}"
+        print(query)
+        return self.post_sql_query(query)[0][0]
+
+
+    def get_channel_id(self, group_id):
+        query = f"SELECT channel_id FROM groups WHERE group_id='{group_id}'"
+        channel_id = self.post_sql_query(query)[0][0]
+        if channel_id != None:
+            return channel_id
+        else: return False
+    
         
     def clear_all_user(self, user_id):
         query = f"DELETE FROM group_join WHERE user_id='{user_id}'"

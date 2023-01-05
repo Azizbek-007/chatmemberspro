@@ -3,7 +3,7 @@ from loader import dp
 from lang.message import lang
 
 
-@dp.message_handler(commands=['id', 'myid', 'gid'])
+@dp.message_handler(commands=['id', 'myid', 'gid'], chat_type=[types.ChatType.GROUP, types.ChatType.SUPER_GROUP])
 async def get_my_id(msg: types.Message):
     if msg.text in ['id', 'myid']:
         text = lang.get('my_id').get("uz")

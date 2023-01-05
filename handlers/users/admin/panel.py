@@ -6,7 +6,7 @@ from aiogram.dispatcher import FSMContext
 from utils.db_api import DBS
 import asyncio
 
-@dp.message_handler(commands="admin", user_id=admins)
+@dp.message_handler(commands="admin", user_id=admins, chat_type=types.ChatType.PRIVATE)
 async def hello_admin(msg: types.Message):
     await msg.reply("Helllo Admin", reply_markup=admin_btn)
 
