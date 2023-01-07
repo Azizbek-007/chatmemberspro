@@ -1,5 +1,6 @@
 from sqlite3 import Error
 import sqlite3 
+from ast import literal_eval
 
 class DBS:
     def post_sql_query(sql_query):
@@ -45,26 +46,31 @@ class DBS:
         return u_count[0][0], g_count[0][0]
     
     def join_in_group (self, user_id, add_user_id, group_id):
-        query = f"SELECT * FROM group_join WHERE user_id='{user_id}' AND add_user_id='{add_user_id}' AND group_id='{group_id}'"
+        query = f"SELECT * FROM group_join WHERE user_id='{user_id}' AND group_id='{group_id}'"
         data = self.post_sql_query(query)
-        if not data:
-            insert_query = f"INSERT INTO group_join(user_id, add_user_id, group_id) VALUES ('{user_id}', '{add_user_id}', '{group_id}')"
+        if data == []: 
+            added_users = []
+            insert_query = f"INSERT INTO group_join(user_id, add_user_id, group_id) VALUES ('{user_id}', '{added_users}', '{group_id}')"
+            self.post_sql_query(insert_query)
+        else: 
+            if len(data[0][2]) > 0:
+                added_users = literal_eval(data[0][2]) 
+            else: added_users = []
+        if add_user_id not in added_users:
+            added_users.append(add_user_id)
+            insert_query = f"UPDATE group_join set add_user_id='{added_users}' where user_id='{user_id}' and group_id='{group_id}'"
             self.post_sql_query(insert_query)
 
     def my_members(self, user_id, group_id):
-        query = f"SELECT count(*) FROM group_join WHERE user_id='{user_id}' and group_id='{group_id}'"
+        query = f"SELECT add_user_id FROM group_join WHERE user_id='{user_id}' and group_id='{group_id}'"
         data = self.post_sql_query(query)
-        return data[0]
+        return len(literal_eval(data[0][0]))
     
     def top_users (self, group_id):
-        query = f"SELECT user_id, group_id FROM group_join WHERE group_id='{group_id}'"
+        query = f"SELECT user_id, group_id, json_array_length(add_user_id) as _count FROM group_join WHERE group_id='{group_id}' ORDER BY _count DESC LIMIT 50"
         data = self.post_sql_query(query)
-        abc = []
-        for x in data:
-            query2 = f"SELECT count(user_id) FROM group_join WHERE user_id={x[0]}"
-            data2 = self.post_sql_query(query2)
-            if {x[0]: data2[0][0]} not in abc:
-                abc.append({x[0]: data2[0][0]})
+        return data
+        
     
     def user_list(self):
         query = "SELECT * FROM users"
@@ -89,7 +95,6 @@ class DBS:
     
     def get_group_premissions(self, group_id):
         query = f"SELECT premissons FROM groups where group_id={group_id}"
-        print(query)
         return self.post_sql_query(query)[0][0]
 
 
@@ -99,7 +104,25 @@ class DBS:
         if channel_id != None:
             return channel_id
         else: return False
+
+    def get_member_count(self, group_id):
+        query = f"SELECT member_count FROM groups WHERE group_id='{group_id}'"
+        member_count = self.post_sql_query(query)[0][0]
+        if member_count != None:
+            return member_count
+        else: return False
     
+    def add_member_count(self, group_id, _count):
+        query = f"UPDATE groups set member_count='{_count}' where group_id={group_id}"
+        self.post_sql_query(query)
+    
+    def unlimit(self, group_id):
+        query = f"UPDATE groups set member_count=NULL WHERE group_id='{group_id}'"
+        self.post_sql_query(query)
+
+    def offchan(self, group_id):
+        query = f"UPDATE groups set chan=1 WHERE group_id='{group_id}'"
+        self.post_sql_query(query)
         
     def clear_all_user(self, user_id):
         query = f"DELETE FROM group_join WHERE user_id='{user_id}'"

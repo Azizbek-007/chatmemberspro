@@ -2,13 +2,13 @@ from aiogram import types
 from loader import dp
 from utils.db_api import DBS
 
-@dp.message_handler(commands="clear", is_reply=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPER_GROUP])
+@dp.message_handler(commands="clear", is_reply=True, is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_clear(msg: types.Message):
     reply_user_id = msg.reply_to_message.from_id
     DBS.clear_all_user(DBS, user_id=reply_user_id)
     await msg.answer("maglumatlari tazalandi/c")
 
-@dp.message_handler(commands="clearall", chat_type=[types.ChatType.GROUP, types.ChatType.SUPER_GROUP])
+@dp.message_handler(commands="clearall", is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_clear_all(msg: types.Message):
     DBS.clear_all_group(DBS, msg.chat.id)
     await msg.answer("Gruppa maglumatlari tazalandi")
