@@ -2,7 +2,7 @@ from aiogram import types
 from loader import dp
 from utils.db_api import DBS
 
-@dp.message_handler(content_types=types.ContentTypes.NEW_CHAT_MEMBERS, chat_type=[types.ChatType.GROUP, types.ChatType.SUPER_GROUP])
+@dp.message_handler(content_types=types.ContentTypes.NEW_CHAT_MEMBERS, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def new_chat_member_bot(msg: types.Message):
     DBS.group_register(DBS, msg.chat.id)
     new_members = msg.new_chat_members

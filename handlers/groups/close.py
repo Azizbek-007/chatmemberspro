@@ -2,7 +2,7 @@ from aiogram import types
 from loader import dp
 from utils.db_api import DBS
 
-@dp.message_handler(commands='close', chat_type=[types.ChatType.GROUP, types.ChatType.SUPER_GROUP])
+@dp.message_handler(commands='close', chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_colse(msg: types.Message):
     group_data= await dp.bot.get_chat(msg.chat.id)
     DBS.set_group_premissions(DBS, msg.chat.id, group_data.permissions)
@@ -14,7 +14,7 @@ async def bot_colse(msg: types.Message):
             permissions=chat_permissions)
     await msg.answer("Gruppada jaziw waqtinshaliq sheklendi")
 
-@dp.message_handler(commands='open', chat_type=[types.ChatType.GROUP, types.ChatType.SUPER_GROUP])
+@dp.message_handler(commands='open', chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_open(msg: types.Message):
     permissions =  DBS.get_group_premissions(DBS, msg.chat.id)
     await dp.bot.set_chat_permissions(
