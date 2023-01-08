@@ -111,6 +111,21 @@ class DBS:
         if member_count != None:
             return member_count
         else: return False
+
+    def get_chan(self, group_id):
+        query = f"SELECT chan FROM groups WHERE group_id='{group_id}'"
+        member_count = self.post_sql_query(query)[0][0]
+        if member_count != None:
+            return member_count
+        else: return False
+
+    def get_ads(self, group_id):
+        query = f"SELECT ads FROM groups WHERE group_id='{group_id}'"
+        member_count = self.post_sql_query(query)[0][0]
+        if member_count != None:
+            return member_count
+        else: return False
+
     
     def add_member_count(self, group_id, _count):
         query = f"UPDATE groups set member_count='{_count}' where group_id={group_id}"
@@ -120,8 +135,25 @@ class DBS:
         query = f"UPDATE groups set member_count=NULL WHERE group_id='{group_id}'"
         self.post_sql_query(query)
 
+    def offads(self, group_id):
+        query = f"UPDATE groups set ads=1 WHERE group_id='{group_id}'"
+        self.post_sql_query(query)
+    
+
+    def onads(self, group_id):
+        query = f"UPDATE groups set ads=NULL WHERE group_id='{group_id}'"
+        self.post_sql_query(query)
+
     def offchan(self, group_id):
         query = f"UPDATE groups set chan=1 WHERE group_id='{group_id}'"
+        self.post_sql_query(query)
+    
+    def onchan(self, group_id):
+        query = f"UPDATE groups set chan=NULL WHERE group_id='{group_id}'"
+        self.post_sql_query(query)
+    
+    def reset(self, group_id):
+        query = f"UPDATE groups set chan=NULL, ads=NULL, member_count=NULL WHERE group_id='{group_id}'"
         self.post_sql_query(query)
         
     def clear_all_user(self, user_id):

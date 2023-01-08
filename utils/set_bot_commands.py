@@ -15,6 +15,10 @@ async def set_default_commands(dp):
             types.BotCommand("set", "set"),
             types.BotCommand("addlimit", "add limit"),
             types.BotCommand("unlimit", "unlimit"),
-            types.BotCommand("offchan", "offchan")
+            types.BotCommand("offchan", "offchan"),
+            types.BotCommand("onchan", "onchan"),
+            types.BotCommand("offads", "offads"),
+            types.BotCommand("onads", "onads"),
+            types.BotCommand("reset", "reset")
         ]
     )
