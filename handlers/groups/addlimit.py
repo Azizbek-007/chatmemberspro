@@ -1,8 +1,9 @@
 from aiogram import types
 from loader import dp, bot_id
 from utils.db_api import DBS
+from filters import IsAdmin
 
-@dp.message_handler(commands=['addlimit'], is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+@dp.message_handler(IsAdmin(), commands=['addlimit'], is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_addlimit(msg: types.Message):
     add_count = msg.text.split(' ')
     if len(add_count) > 0:

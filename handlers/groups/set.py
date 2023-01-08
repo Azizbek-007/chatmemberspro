@@ -1,9 +1,9 @@
 from aiogram import types
 from loader import dp, bot_id
 from utils.db_api import DBS
+from filters import IsAdmin
 
-
-@dp.message_handler(commands="set", chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+@dp.message_handler(IsAdmin(), commands="set", chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_set(msg: types.Message):
     channel_username = msg.text.split(' ')
     if len(channel_username) == 2:
@@ -19,12 +19,12 @@ async def bot_set(msg: types.Message):
     else: await msg.reply("Komandadan qa'te paydalanip atirsiz")
 
 
-@dp.message_handler(commands='unset', chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+@dp.message_handler(IsAdmin(), commands='unset', chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_unset(msg: types.Message):
     DBS.group_unset_channel(DBS, msg.chat.id)
     await msg.answer("kana oshirildi")
 
-@dp.message_handler(commands='channel', chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+@dp.message_handler(IsAdmin(), commands='channel', chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_get_channel_data(msg: types.Message):
     channel_id = DBS.get_channel_id(DBS, group_id=msg.chat.id)
     if channel_id !=False:
