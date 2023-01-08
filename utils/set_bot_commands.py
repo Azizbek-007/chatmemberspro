@@ -19,6 +19,9 @@ async def set_default_commands(dp):
             types.BotCommand("onchan", "onchan"),
             types.BotCommand("offads", "offads"),
             types.BotCommand("onads", "onads"),
-            types.BotCommand("reset", "reset")
+            types.BotCommand("reset", "reset"),
+            types.BotCommand("open", "open"),
+            types.BotCommand("close", "close"),
+            types.BotCommand("time", "time")
         ]
     )

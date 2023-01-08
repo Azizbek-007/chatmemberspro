@@ -23,3 +23,17 @@ def send_type(_type):
         )
 
 cancel_btn = InlineKeyboardMarkup().add(InlineKeyboardButton(text="cancel", callback_data="cancel"))
+
+def added_btn(user_id):
+        return InlineKeyboardMarkup().add(
+                        InlineKeyboardButton(text="qostim", callback_data=f"added={user_id}"))
+
+def added_channe_btn(user_id):
+        return InlineKeyboardMarkup().add(
+                        InlineKeyboardButton(text="Agza boldim", callback_data=f"added_channel={user_id}"))
+
+def pagination_btn(form, inc):
+    return InlineKeyboardMarkup().add(
+            InlineKeyboardButton("◀️", callback_data=f"back={form}={inc}"),
+            InlineKeyboardButton("▶️", callback_data=f"next={form}={inc}")).add(
+            InlineKeyboardButton("cancel", callback_data='cancel'))

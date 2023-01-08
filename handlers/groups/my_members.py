@@ -9,5 +9,8 @@ async def bo_my_members(msg: types.Message):
     try:
         await dp.throttle(key='*', rate=5)
         _count = DBS.my_members(DBS, msg.from_id, msg.chat.id)
-        await msg.answer(f"Siz {_count} adam qosin'iz")
+        if _count == 0: 
+            await msg.answer("siz adam qospagansiz")
+        else:
+            await msg.answer(f"Siz {_count} adam qosin'iz")
     except Throttled: pass

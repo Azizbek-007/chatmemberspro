@@ -6,7 +6,7 @@ from filters import IsAdmin
 @dp.message_handler(IsAdmin(), commands=['addlimit'], is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_addlimit(msg: types.Message):
     add_count = msg.text.split(' ')
-    if len(add_count) > 0:
+    if len(add_count) == 2:
         try: 
             add_count_number = int(add_count[1])
             DBS.add_member_count(DBS, msg.chat.id, add_count_number)

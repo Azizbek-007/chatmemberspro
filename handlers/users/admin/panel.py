@@ -50,7 +50,7 @@ async def get_message_for_group(msg: types.Message, state: FSMContext):
         n, s = 0, 0
         for x in DBS.group_list(DBS):
             try:
-                user_id = x[0]
+                user_id = x[1]
                 await msg.copy_to(user_id, reply_markup=msg.reply_markup)
                 s +=1
                 await asyncio.sleep(.08)
@@ -62,7 +62,7 @@ async def get_message_for_group(msg: types.Message, state: FSMContext):
         n, s = 0, 0
         for x in DBS.group_list(DBS):
             try:
-                user_id = x[0]
+                user_id = x[1]
                 await msg.forward(user_id)
                 s +=1
                 await asyncio.sleep(.08)

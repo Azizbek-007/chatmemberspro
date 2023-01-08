@@ -5,12 +5,14 @@ from loader import dp
 from utils.db_api import DBS
 from aiogram.utils.exceptions import Throttled
 from filters import IsAdmin
+from keyboards.inline import added_btn, added_channe_btn
 
 @dp.message_handler(IsAdmin(), content_types=[types.ContentType.ANY], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def not_join_channel (msg: types.Message):
+    DBS.group_register(DBS, msg.chat.id)
     get_chat = await dp.bot.get_chat_member(msg.chat.id, msg.from_id)
     status_list = ['administrator', 'creator']
-    if get_chat.status not in status_list:
+    if get_chat.status not in status_list and not msg.new_chat_members:
         channel_id = DBS.get_channel_id(DBS, msg.chat.id)
         if channel_id != False:
             get_status = await dp.bot.get_chat_member(channel_id, msg.from_id)
@@ -20,29 +22,39 @@ async def not_join_channel (msg: types.Message):
                 await msg.answer(
                     text=f"[{get_data.title}]({get_data.invite_link}) Kanalga agza bolmasan'iz gruppada jaza almaysiz", 
                     parse_mode="markdown",
-                    disable_web_page_preview=True
+                    disable_web_page_preview=True,
+                    reply_markup=added_channe_btn(msg.from_id)
                     )
                 await dp.bot.restrict_chat_member(
                         chat_id=msg.chat.id,
                         user_id=msg.from_id,
                         until_date=math.floor(time.time()) + 5*60,
-                        permissions=types.ChatPermissions(can_send_messages=False, can_invite_users=True)
+                        permissions=types.ChatPermissions(
+                                can_send_messages=False, 
+                                can_invite_users=True
+                            )
                         )
         
         count_data = DBS.get_member_count(DBS, msg.chat.id)
         if count_data != False:
-            if DBS.my_members(DBS, user_id=msg.from_id, group_id=msg.chat.id) < int(count_data):  
+            user_added_count = DBS.my_members(DBS, user_id=msg.from_id, group_id=msg.chat.id)
+            if user_added_count < int(count_data):  
+                real_added_cound = count_data - user_added_count
                 await msg.delete()
                 await msg.answer(
-                        text=f"{count_data} adam qospasan'iz gruppada jaza almaysiz", 
+                        text=f"{real_added_cound} adam qospasan'iz gruppada jaza almaysiz", 
                         parse_mode="markdown",
-                        disable_web_page_preview=True
+                        disable_web_page_preview=True,
+                        reply_markup=added_btn(msg.from_id)
                         )
                 await dp.bot.restrict_chat_member(
                             chat_id=msg.chat.id,
                             user_id=msg.from_id,
                             until_date=math.floor(time.time()) + 5*60,
-                            permissions=types.ChatPermissions(can_send_messages=False, can_invite_users=True)
+                            permissions=types.ChatPermissions(
+                                can_send_messages=False, 
+                                can_invite_users=True
+                            )
                         )
         
         get_chan_status = DBS.get_chan(DBS, msg.chat.id)
@@ -58,7 +70,10 @@ async def not_join_channel (msg: types.Message):
                             chat_id=msg.chat.id,
                             user_id=msg.from_id,
                             until_date=math.floor(time.time()) + 5*60,
-                            permissions=types.ChatPermissions(can_send_messages=False, can_invite_users=True)
+                            permissions=types.ChatPermissions(
+                                can_send_messages=False, 
+                                can_invite_users=True
+                            )
                         )
         get_ads = DBS.get_ads(DBS, msg.chat.id)
         if get_ads != False:

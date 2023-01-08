@@ -25,7 +25,6 @@ class DBS:
     def user_register (self, user_id, user_name, full_name):
         query = f"SELECT * FROM users WHERE user_id='{user_id}'"
         data = self.post_sql_query(query)
-        print(data)
         if not data:
             insert_query = f"INSERT INTO users(user_id, username, full_name) VALUES ('{user_id}', '{user_name}', '{full_name}')"
             self.post_sql_query(insert_query)
@@ -33,7 +32,6 @@ class DBS:
     def group_register (self, group_id):
         query = f"SELECT * FROM groups WHERE group_id='{group_id}'"
         data = self.post_sql_query(query)
-        print(data)
         if not data:
             insert_query = f"INSERT INTO groups(group_id) VALUES ('{group_id}')"
             self.post_sql_query(insert_query)
@@ -64,6 +62,7 @@ class DBS:
     def my_members(self, user_id, group_id):
         query = f"SELECT add_user_id FROM group_join WHERE user_id='{user_id}' and group_id='{group_id}'"
         data = self.post_sql_query(query)
+        if len(data) == 0: return 0
         return len(literal_eval(data[0][0]))
     
     def top_users (self, group_id):
