@@ -9,9 +9,22 @@ from keyboards.inline import added_btn, added_channe_btn
 
 @dp.message_handler(IsAdmin(), content_types=[types.ContentType.ANY], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def not_join_channel (msg: types.Message):
+
     DBS.group_register(DBS, msg.chat.id)
+
+    get_chan_status = DBS.get_chan(DBS, msg.chat.id)
+    if get_chan_status != False:
+        if msg.sender_chat:
+            await dp.bot.delete_message(msg.chat.id, msg.message_id)
+            await msg.answer(
+                    text="kanal atinnan gruppada jaza almaysiz", 
+                    parse_mode="markdown",
+                    disable_web_page_preview=True
+                    )
+                
     get_chat = await dp.bot.get_chat_member(msg.chat.id, msg.from_id)
     status_list = ['administrator', 'creator']
+
     if get_chat.status not in status_list and not msg.new_chat_members:
         channel_id = DBS.get_channel_id(DBS, msg.chat.id)
         if channel_id != False:
@@ -23,7 +36,7 @@ async def not_join_channel (msg: types.Message):
                     text=f"[{get_data.title}]({get_data.invite_link}) Kanalga agza bolmasan'iz gruppada jaza almaysiz", 
                     parse_mode="markdown",
                     disable_web_page_preview=True,
-                    reply_markup=added_channe_btn(msg.from_id)
+                    reply_markup=added_channe_btn(msg.from_id, get_data.invite_link)
                     )
                 await dp.bot.restrict_chat_member(
                         chat_id=msg.chat.id,
@@ -41,40 +54,25 @@ async def not_join_channel (msg: types.Message):
             if user_added_count < int(count_data):  
                 real_added_cound = count_data - user_added_count
                 await msg.delete()
-                await msg.answer(
-                        text=f"{real_added_cound} adam qospasan'iz gruppada jaza almaysiz", 
-                        parse_mode="markdown",
-                        disable_web_page_preview=True,
-                        reply_markup=added_btn(msg.from_id)
-                        )
-                await dp.bot.restrict_chat_member(
-                            chat_id=msg.chat.id,
-                            user_id=msg.from_id,
-                            until_date=math.floor(time.time()) + 5*60,
-                            permissions=types.ChatPermissions(
-                                can_send_messages=False, 
-                                can_invite_users=True
+                try:
+                    await dp.throttle(key='*', rate=3)
+                    await msg.answer(
+                            text=f"{real_added_cound} adam qospasan'iz gruppada jaza almaysiz", 
+                            parse_mode="markdown",
+                            disable_web_page_preview=True,
+                            reply_markup=added_btn(msg.from_id)
                             )
-                        )
-        
-        get_chan_status = DBS.get_chan(DBS, msg.chat.id)
-        if get_chan_status != False:
-            if msg.sender_chat:
-                await msg.delete()
-                await msg.answer(
-                        text="kanal atinnan gruppada jaza almaysiz", 
-                        parse_mode="markdown",
-                        disable_web_page_preview=True
-                        )
-                await dp.bot.restrict_chat_member(
-                            chat_id=msg.chat.id,
-                            user_id=msg.from_id,
-                            until_date=math.floor(time.time()) + 5*60,
-                            permissions=types.ChatPermissions(
-                                can_send_messages=False, 
-                                can_invite_users=True
+                    await dp.bot.restrict_chat_member(
+                                chat_id=msg.chat.id,
+                                user_id=msg.from_id,
+                                until_date=math.floor(time.time()) + 5*60,
+                                permissions=types.ChatPermissions(
+                                    can_send_messages=False, 
+                                    can_invite_users=True
+                                )
                             )
-                        )
+                except: pass
+                    
         get_ads = DBS.get_ads(DBS, msg.chat.id)
         if get_ads != False:
             link_list = ['mention', 'url', 'text_link', 'text_mention']

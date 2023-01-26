@@ -5,6 +5,7 @@ from filters import IsAdmin
 
 @dp.message_handler(IsAdmin(), commands="set", is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_set(msg: types.Message):
+    await msg.delete()
     channel_username = msg.text.split(' ')
     if len(channel_username) == 2:
         channel_username = channel_username[1]
@@ -21,11 +22,13 @@ async def bot_set(msg: types.Message):
 
 @dp.message_handler(IsAdmin(), commands='unset', is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_unset(msg: types.Message):
+    await msg.delete()
     DBS.group_unset_channel(DBS, msg.chat.id)
     await msg.answer("kana oshirildi")
 
 @dp.message_handler(IsAdmin(), commands='channel', is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_get_channel_data(msg: types.Message):
+    await msg.delete()
     channel_id = DBS.get_channel_id(DBS, group_id=msg.chat.id)
     if channel_id !=False:
         channel_data = await dp.bot.get_chat(chat_id=channel_id)

@@ -61,6 +61,7 @@ class DBS:
 
     def my_members(self, user_id, group_id):
         query = f"SELECT add_user_id FROM group_join WHERE user_id='{user_id}' and group_id='{group_id}'"
+        print(query)
         data = self.post_sql_query(query)
         if len(data) == 0: return 0
         return len(literal_eval(data[0][0]))
@@ -77,6 +78,14 @@ class DBS:
     
     def group_list(self):
         query = "SELECT * FROM groups"
+        return self.post_sql_query(query)
+    
+    def group_list_limited(self, form):
+        query = f"SELECT * FROM groups where id>{form}" 
+        return self.post_sql_query(query)
+    
+    def group_list_limited_back(self, form):
+        query = f"SELECT * FROM groups where id<{form} order by id desc" 
         return self.post_sql_query(query)
     
     def group_insert_channel(self, channel_id, group_id):

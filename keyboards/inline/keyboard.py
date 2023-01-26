@@ -1,9 +1,10 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from loader import dp
 
 def start_btn(bot_username):
         return InlineKeyboardMarkup().add(
         InlineKeyboardButton(text="📊Statistika", callback_data="statistika"),
-        InlineKeyboardButton(text="Barcha Guruhlar", callback_data="all_groups")
+        # InlineKeyboardButton(text="Barcha Guruhlar", callback_data="all_groups")
         ).add(
         InlineKeyboardButton(text="Guruhga qoshish", url=f"https://t.me/{bot_username}?startgroup=new")
         )
@@ -28,12 +29,18 @@ def added_btn(user_id):
         return InlineKeyboardMarkup().add(
                         InlineKeyboardButton(text="qostim", callback_data=f"added={user_id}"))
 
-def added_channe_btn(user_id):
+def added_channe_btn(user_id, url):
         return InlineKeyboardMarkup().add(
-                        InlineKeyboardButton(text="Agza boldim", callback_data=f"added_channel={user_id}"))
+                InlineKeyboardButton(text="Каналға қосылыў", url=url)
+                ).add(
+                InlineKeyboardButton(text="Ағза болдым ✅", callback_data=f"added_channel={user_id}"))
 
 def pagination_btn(form, inc):
     return InlineKeyboardMarkup().add(
             InlineKeyboardButton("◀️", callback_data=f"back={form}={inc}"),
             InlineKeyboardButton("▶️", callback_data=f"next={form}={inc}")).add(
-            InlineKeyboardButton("cancel", callback_data='cancel'))
+            InlineKeyboardButton("cancel", callback_data='cancel_user'))
+
+def share_btn(bot_user):
+        return InlineKeyboardMarkup().add(
+                        InlineKeyboardButton(text="➕ Ботты группаға қосыў", url=f"https://t.me/{bot_user}?startgroup=new"))
