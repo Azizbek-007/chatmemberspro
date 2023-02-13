@@ -93,6 +93,16 @@ class DBS:
         self.post_sql_query(query)
         return True
     
+    def group_set_status(self, group_id):
+        query = f"UPDATE groups set status=0 where group_id='{group_id}'"
+        self.post_sql_query(query)
+        return True
+    
+    def user_set_status(self, user_id):
+        query = f"UPDATE users set status=0 where user_id='{user_id}'"
+        self.post_sql_query(query)
+        return True
+    
     def group_unset_channel(self, group_id):
         query = f"UPDATE groups set channel_id=NULL where group_id={group_id}"
         self.post_sql_query(query)
@@ -159,7 +169,7 @@ class DBS:
     def onchan(self, group_id):
         query = f"UPDATE groups set chan=NULL WHERE group_id='{group_id}'"
         self.post_sql_query(query)
-    
+
     def reset(self, group_id):
         query = f"UPDATE groups set chan=NULL, ads=NULL, member_count=NULL WHERE group_id='{group_id}'"
         self.post_sql_query(query)

@@ -5,7 +5,7 @@ from filters import IsAdmin
 from lang.message import lang
 from keyboards.inline import share_btn
 
-@dp.message_handler(IsAdmin(), commands="top", is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+@dp.message_handler(IsAdmin(), commands="top", chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_top_list(msg: types.Message):
     await msg.delete()
     users = DBS.top_users(DBS, msg.chat.id)

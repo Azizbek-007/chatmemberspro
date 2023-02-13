@@ -18,7 +18,7 @@ async def bot_added_call (call: types.CallbackQuery):
                             permissions=permissions
                         )
             else:
-                await call.answer(f"{count_data-user_added_count} adam qosiwin'iz kerek!", True)
+                await call.answer(f"{count_data-user_added_count} адам қосыўыңыз керек!", True)
         else:
             await call.message.delete() 
             permissions =  DBS.get_group_premissions(DBS, call.message.chat.id)
@@ -27,7 +27,7 @@ async def bot_added_call (call: types.CallbackQuery):
                             user_id=call.from_user.id,
                             permissions=permissions
                         )
-    else: await call.answer("Aljasip basip aldin'iz")
+    else: await call.answer("Бул түйме сиз ушын емес 😉")
 
 @dp.callback_query_handler(lambda call: call.data.startswith('added_channel='))
 async def bot_add_user_channel(call: types.CallbackQuery):
@@ -37,7 +37,7 @@ async def bot_add_user_channel(call: types.CallbackQuery):
         if channel_id != False:
             get_status = await dp.bot.get_chat_member(channel_id, call.from_user.id)
             if get_status.status == 'left':
-                await call.answer("Ele kanalg'a ag'za bolmadin'iz", True)
+                await call.answer("⛔️ Еле каналға ағза болмадыңыз!", True)
             else:
                 await call.message.delete() 
                 permissions =  DBS.get_group_premissions(DBS, call.message.chat.id)
@@ -54,4 +54,4 @@ async def bot_add_user_channel(call: types.CallbackQuery):
                                 user_id=call.from_user.id,
                                 permissions=permissions
                             )
-    else: await call.answer("Aljasip basip aldin'iz")
+    else: await call.answer("Бул түйме сиз ушын емес 😉")

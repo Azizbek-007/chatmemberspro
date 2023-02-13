@@ -5,7 +5,8 @@ from filters import IsAdmin
 
 @dp.message_handler(IsAdmin(), commands=['limit'], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_limit(msg: types.Message):
+    await msg.delete()
     _count = DBS.get_member_count(DBS, msg.chat.id)
     if _count !=False:
-        await msg.answer(f"{_count} limit")
-    else: await msg.answer("0")
+        await msg.answer(f"{_count} Лимит")
+    else: await msg.answer("Лимит жоқ")

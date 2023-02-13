@@ -7,20 +7,27 @@ from aiogram.utils.exceptions import Throttled
 from filters import IsAdmin
 from keyboards.inline import added_btn, added_channe_btn
 
-@dp.message_handler(IsAdmin(), content_types=[types.ContentType.ANY], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+@dp.message_handler(content_types=[types.ContentType.ANY], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def not_join_channel (msg: types.Message):
 
     DBS.group_register(DBS, msg.chat.id)
-
     get_chan_status = DBS.get_chan(DBS, msg.chat.id)
+    boll = msg.from_user.username
+    if boll == "GroupAnonymousBot": return
+    
     if get_chan_status != False:
+        boll = msg.from_user.username
         if msg.sender_chat:
             await dp.bot.delete_message(msg.chat.id, msg.message_id)
-            await msg.answer(
-                    text="kanal atinnan gruppada jaza almaysiz", 
-                    parse_mode="markdown",
-                    disable_web_page_preview=True
-                    )
+            try:
+                await dp.throttle(key='*', rate=10)
+                await msg.answer(
+                        text="⛔️ Канал атынан группада жаза алмайсыз!", 
+                        parse_mode="markdown",
+                        disable_web_page_preview=True
+                )
+                return
+            except Throttled: return True
                 
     get_chat = await dp.bot.get_chat_member(msg.chat.id, msg.from_id)
     status_list = ['administrator', 'creator']
@@ -32,21 +39,24 @@ async def not_join_channel (msg: types.Message):
             get_data = await dp.bot.get_chat(channel_id)
             if get_status.status == 'left':
                 await msg.delete()
-                await msg.answer(
-                    text=f"[{get_data.title}]({get_data.invite_link}) Kanalga agza bolmasan'iz gruppada jaza almaysiz", 
-                    parse_mode="markdown",
-                    disable_web_page_preview=True,
-                    reply_markup=added_channe_btn(msg.from_id, get_data.invite_link)
-                    )
-                await dp.bot.restrict_chat_member(
-                        chat_id=msg.chat.id,
-                        user_id=msg.from_id,
-                        until_date=math.floor(time.time()) + 5*60,
-                        permissions=types.ChatPermissions(
-                                can_send_messages=False, 
-                                can_invite_users=True
-                            )
+                try:
+                    await dp.throttle(key='*', rate=3)
+                    await msg.answer(
+                        text=f"[{msg.from_user.full_name}](tg://user?id={msg.from_id}) [{get_data.title}]({get_data.invite_link}) Каналға ағза болмасаңыз группада жаза алмайсыз!", 
+                        parse_mode="markdown",
+                        disable_web_page_preview=True,
+                        reply_markup=added_channe_btn(msg.from_id, get_data.invite_link)
                         )
+                    await dp.bot.restrict_chat_member(
+                            chat_id=msg.chat.id,
+                            user_id=msg.from_id,
+                            until_date=math.floor(time.time()) + 5*60,
+                            permissions=types.ChatPermissions(
+                                    can_send_messages=False, 
+                                    can_invite_users=True
+                                )
+                            )
+                except Throttled: pass
         
         count_data = DBS.get_member_count(DBS, msg.chat.id)
         if count_data != False:
@@ -57,8 +67,8 @@ async def not_join_channel (msg: types.Message):
                 try:
                     await dp.throttle(key='*', rate=3)
                     await msg.answer(
-                            text=f"{real_added_cound} adam qospasan'iz gruppada jaza almaysiz", 
-                            parse_mode="markdown",
+                            text=f"<a href='tg://user?id={msg.from_id}'>{msg.from_user.full_name}</a> {real_added_cound} адам қоспасаңыз группада жаза алмайсыз!", 
+                            parse_mode="html",
                             disable_web_page_preview=True,
                             reply_markup=added_btn(msg.from_id)
                             )

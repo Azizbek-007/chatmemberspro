@@ -3,15 +3,17 @@ from loader import dp
 
 def start_btn(bot_username):
         return InlineKeyboardMarkup().add(
-        InlineKeyboardButton(text="📊Statistika", callback_data="statistika"),
+        InlineKeyboardButton(text="📊 Есабат", callback_data="statistika"),
         # InlineKeyboardButton(text="Barcha Guruhlar", callback_data="all_groups")
         ).add(
-        InlineKeyboardButton(text="Guruhga qoshish", url=f"https://t.me/{bot_username}?startgroup=new")
+        InlineKeyboardButton(text="➕ Группаға қосыў", url=f"https://t.me/{bot_username}?startgroup=new")
         )
 
 admin_btn = InlineKeyboardMarkup().add(
         InlineKeyboardButton("Send Message", callback_data="sendMessage")).add(
         InlineKeyboardButton("Send Forward Message", callback_data="sendForward")
+        ).add(
+        InlineKeyboardButton("Update", callback_data="AllUpdate")
         )
 
 def send_type(_type):
@@ -27,7 +29,7 @@ cancel_btn = InlineKeyboardMarkup().add(InlineKeyboardButton(text="cancel", call
 
 def added_btn(user_id):
         return InlineKeyboardMarkup().add(
-                        InlineKeyboardButton(text="qostim", callback_data=f"added={user_id}"))
+                        InlineKeyboardButton(text="Қостым ✅", callback_data=f"added={user_id}"))
 
 def added_channe_btn(user_id, url):
         return InlineKeyboardMarkup().add(

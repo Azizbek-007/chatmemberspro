@@ -8,6 +8,7 @@ import pytz
 
 @dp.message_handler(IsAdmin(), commands=['time'], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_timee(msg: types.Message):
+    await msg.delete()
     try:
         await dp.throttle(key='*', rate=5)
         time_ = datetime.now(pytz.timezone('Asia/Tashkent')).strftime("%Y-%m-%d %H:%M:%S")
