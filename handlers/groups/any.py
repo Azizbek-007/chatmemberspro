@@ -6,7 +6,7 @@ from utils.db_api import DBS
 from aiogram.utils.exceptions import Throttled
 from filters import IsAdmin
 from keyboards.inline import added_btn, added_channe_btn
-
+import asyncio
 @dp.message_handler(content_types=[types.ContentType.ANY], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def not_join_channel (msg: types.Message):
 
@@ -41,7 +41,7 @@ async def not_join_channel (msg: types.Message):
                 await msg.delete()
                 try:
                     await dp.throttle(key='*', rate=3)
-                    await msg.answer(
+                    data = await msg.answer(
                         text=f"[{msg.from_user.full_name}](tg://user?id={msg.from_id}) [{get_data.title}]({get_data.invite_link}) Каналға ағза болмасаңыз группада жаза алмайсыз!", 
                         parse_mode="markdown",
                         disable_web_page_preview=True,
@@ -56,6 +56,8 @@ async def not_join_channel (msg: types.Message):
                                     can_invite_users=True
                                 )
                             )
+                    await asyncio.sleep(5*60)
+                    await data.delete()
                 except Throttled: pass
         
         count_data = DBS.get_member_count(DBS, msg.chat.id)
@@ -66,7 +68,7 @@ async def not_join_channel (msg: types.Message):
                 await msg.delete()
                 try:
                     await dp.throttle(key='*', rate=3)
-                    await msg.answer(
+                    data = await msg.answer(
                             text=f"<a href='tg://user?id={msg.from_id}'>{msg.from_user.full_name}</a> {real_added_cound} адам қоспасаңыз группада жаза алмайсыз!", 
                             parse_mode="html",
                             disable_web_page_preview=True,
@@ -81,6 +83,8 @@ async def not_join_channel (msg: types.Message):
                                     can_invite_users=True
                                 )
                             )
+                    await asyncio.sleep(5*60)
+                    await data.delete()
                 except: pass
                     
         get_ads = DBS.get_ads(DBS, msg.chat.id)

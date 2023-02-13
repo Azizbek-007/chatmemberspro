@@ -5,6 +5,7 @@ from filters import IsAdmin
 from aiogram.utils.exceptions import Throttled
 from lang.message import lang
 from keyboards.inline import share_btn
+import asyncio
 
 @dp.message_handler(IsAdmin(), commands=['mymembers'], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bo_my_members(msg: types.Message):
