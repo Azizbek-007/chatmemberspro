@@ -12,5 +12,5 @@ async def bot_addlimit(msg: types.Message):
             DBS.add_member_count(DBS, msg.chat.id, add_count_number)
             await msg.answer("Qosildi")
         except TypeError:
-            await msg.answer("/addlimit 10") 
-    else: await msg.answer("/addlimit 10")
+            await msg.answer("Дурыс жазың!\n\nМысалы: /addlist 10\n❗️Еслетпе: 10 санының орнына қәлеген санды жазыўыңызға болады.") 
+    else: await msg.answer("Дурыс жазың!\n\nМысалы: /addlist 10\n")

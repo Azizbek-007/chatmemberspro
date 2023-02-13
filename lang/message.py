@@ -89,7 +89,7 @@ Tasodifiy raqamlar funktsiyasi
     },
 
     "reply_user_count": {
-        "uz": "<a href='tg://user?id={}'>{}</a> gruppaga {} adam qosti."
+        "uz": "<a href='tg://user?id={}'>{}</a> {} адам қосқан!"
     },
     "my_id": {
         "uz": "<a href='tg://user?id={}'>{}</a> sizdin' user id: <code>{}</code>"
