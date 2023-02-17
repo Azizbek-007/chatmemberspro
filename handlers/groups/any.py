@@ -14,6 +14,7 @@ async def not_join_channel (msg: types.Message):
     get_chan_status = DBS.get_chan(DBS, msg.chat.id)
     boll = msg.from_user.username
     if boll == "GroupAnonymousBot": return
+    elif msg.left_chat_member: return
     
     if get_chan_status != False:
         boll = msg.from_user.username
