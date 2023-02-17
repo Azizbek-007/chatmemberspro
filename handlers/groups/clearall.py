@@ -19,4 +19,7 @@ async def bot_clear_all(msg: types.Message):
 @dp.message_handler(IsAdmin(), commands="clear", chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_clear(msg: types.Message):
     await msg.delete()
+    
+@dp.message_handler(IsAdmin(), commands="clear", is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+async def bot_clear(msg: types.Message):
     await msg.answer("Дурыс жазың!\n\nМысалы: /clear (ID яки reply)")

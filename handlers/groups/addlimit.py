@@ -15,3 +15,4 @@ async def bot_addlimit(msg: types.Message):
             await msg.answer("Дурыс жазың!\n\nМысалы: /addlist 10\n❗️Еслетпе: 10 санының орнына қәлеген санды жазыўыңызға болады.") 
     else: await msg.answer("Дурыс жазың!\n\nМысалы: /addlist 10\n")
     await msg.delete()
+    else: await msg.answer("Дурыс жазың!\n\nМысалы: /addlist 10\n")

@@ -29,6 +29,7 @@ lang = {
 
     "reply_user_count": {
         "uz": "<a href='tg://user?id={}'>{}</a> группаға {} адам қосты ✅"
+        "uz": "<a href='tg://user?id={}'>{}</a> {} адам қосқан!"
     },
     "my_id": {
         "uz": "<a href='tg://user?id={}'>{}</a> sсизиң ID номериңиз: <code>{}</code>"

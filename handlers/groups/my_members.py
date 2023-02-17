@@ -20,4 +20,8 @@ async def bo_my_members(msg: types.Message):
         else:
             text = lang.get("my_member").get("uz")[0].format(msg.from_id, msg.from_user.first_name, _count)
             await msg.answer(text, reply_markup=share_btn(bot_info.username))
+        if _count == 0: 
+            await msg.answer(f"<a href='tg://user?id={msg.from_id}'>{msg.from_user.full_name}</a> Сиз еле адам қоспадыңыз!")
+        else: 
+            await msg.answer(f"<a href='tg://user?id={msg.from_id}'>{msg.from_user.full_name}</a> сиз {_count} адам қосқансыз!")
     except Throttled: pass

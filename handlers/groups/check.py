@@ -30,3 +30,14 @@ async def bot_check_fix(msg: types.Message):
         text = lang.get("check").get("uz")[2]
         await msg.answer(text)
     except: pass
+    reply_user = msg.reply_to_message.from_user
+    reply_user_count = DBS.my_members(DBS, user_id=reply_user.id)
+    if int(reply_user_count) == 0:
+        await msg.answer(f"<a href='tg://user?id={msg.from_id}'>{msg.from_user.full_name}</a> еле адам қоспаған!")
+    else:
+        text = lang.get("reply_user_count").get("uz")
+        await msg.answer(text.format(reply_user.id, reply_user.first_name, reply_user_count[0]))
+    
+@dp.message_handler(IsAdmin(), commands=['check'], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+async def bot_check_fix(msg: types.Message):
+    await msg.answer("Группаға ким қанша адам қосқанын билиў ушын, сол адамға reply етип, /check буйрығын киритиң!")
