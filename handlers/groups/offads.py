@@ -3,7 +3,8 @@ from loader import dp
 from utils.db_api import DBS
 from filters import IsAdmin
 
-@dp.message_handler(IsAdmin(), commands=['offads'], is_chat_admin=True, chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+@dp.message_handler(IsAdmin(), commands=['offads'], chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
 async def bot_offads(msg: types.Message):
+    await msg.delete()
     DBS.offads(DBS, msg.chat.id)
-    await msg.answer("ok")
+    await msg.answer("⛔️ Рекламаға қарсы дизим иске түсти!")
