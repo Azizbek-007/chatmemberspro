@@ -10,4 +10,4 @@ class IsAdmin(BoundFilter):
         if get_chat.status == 'administrator':
             get_user_status = (await bot.get_chat_member(message.chat.id, message.from_id)).status
             if get_user_status not in ['restricted', 'member'] or is_anonim_admin_us == 'GroupAnonymousBot':
-                return True
+                return True 
