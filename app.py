@@ -20,5 +20,5 @@ if __name__ == '__main__':
             'my_chat_member', 
             'message', 
             'callback_query'
-        ], on_startup=on_startup)
+        ], on_startup=on_startup) 
  
